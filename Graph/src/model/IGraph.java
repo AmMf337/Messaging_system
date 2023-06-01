@@ -14,4 +14,8 @@ public interface IGraph<T> {
 
     public void deleteVertex(T value);
     public void deleteEdge(T vertexA,T vertexB);
+
+    public void floydWarshall();
+
+    public  void prim(T value);
 }

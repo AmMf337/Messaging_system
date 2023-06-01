@@ -198,7 +198,80 @@ public class GraphAbjacentList<T> implements IGraph<T>{
             }
         }
     }
-    
+    @Override
+    public void floydWarshall() {
+        int size = vertexes.size();
+        int[][] distances = new int[size][size];
+        int[][] next = new int[size][size];
+
+        for (int i = 0; i < size; i++) {
+            Arrays.fill(distances[i], Integer.MAX_VALUE);
+            Arrays.fill(next[i], -1);
+        }
+
+        for (int i = 0; i < size; i++) {
+            Vertex<T> u = vertexes.get(i);
+            distances[i][i] = 0;
+            for (Vertex<T> v : u.getVertexes()) {
+                int j = vertexes.indexOf(v);
+                distances[i][j] = v.getWeight();
+                next[i][j] = j;
+            }
+        }
+
+
+        for (int k = 0; k < size; k++) {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (distances[i][k] != Integer.MAX_VALUE && distances[k][j] != Integer.MAX_VALUE &&
+                            distances[i][k] + distances[k][j] < distances[i][j]) {
+                        distances[i][j] = distances[i][k] + distances[k][j];
+                        next[i][j] = next[i][k];
+                    }
+                }
+            }
+        }
+
+
+        for (int i = 0; i < size; i++) {
+            Vertex<T> u = vertexes.get(i);
+            for (Vertex<T> v : u.getVertexes()) {
+                int j = vertexes.indexOf(v);
+                v.setWeight(distances[i][j]);
+                v.setPredecessor(vertexes.get(next[i][j]));
+            }
+        }
+    }
+    @Override
+    public void prim(T value){
+        PriorityQueue<Vertex<T>> q = new PriorityQueue<>(Collections.reverseOrder(new ComparatorWeight<T>()));
+        for (Vertex<T> u:vertexes) {
+            u.setWeight(Integer.MAX_VALUE);
+            u.setColor(Color.WHITE);
+            if(u.getValue()==value){
+                u.setWeight(0);
+                u.setPredecessor(null);
+            }
+            q.add(u);
+        }
+        Iterator<Vertex<T>> it = q.iterator();
+        while(!q.isEmpty()){
+            Vertex<T> u = q.poll();
+            for (Vertex<T> v:u.getVertexes()) {
+                if(v.getColor()==Color.WHITE){
+                    for (Vertex<T> s: q) {
+                        if(s.getValue()==v.getValue() && v.getWeight()<s.getWeight()){
+                            q.remove(s);
+                            s.setWeight(v.getWeight());
+                            s.setPredecessor(u);
+                            q.offer(s);
+                        }
+                        u.setColor(Color.BLACK);
+                    }
+                }
+            }
+        }
+    }
     public ArrayList<Vertex<T>> getVertexes() {
         return vertexes;
     }
