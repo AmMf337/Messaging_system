@@ -61,7 +61,7 @@ public class GraphAbjacentList<T> implements IGraph<T>{
     }
 
     @Override
-    public void bfs(Object origin) {
+    public void bfs(T origin) {
         int originPosition = 0;
         for (int i = 0;i<vertexes.size();i++) {
             if(vertexes.get(i).getValue() !=origin){
