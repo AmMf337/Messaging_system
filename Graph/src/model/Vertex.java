@@ -68,4 +68,18 @@ public class Vertex<T> {
     public void setPredecessor(Vertex<T> predecessor) {
         this.predecessor = predecessor;
     }
+    @Override
+    public String toString() {
+        String msj = "Valor Vertice"+value.toString()+"\n";
+        msj += "Distancia "+distance+"\n";
+        msj += "Peso "+weight+"\n";
+        msj += "Aristas: "+"\n";
+        for (Vertex<T>a:vertexes) {
+            msj += "Valor arista " +a.getValue()+" peso "+a.getWeight()+"\n";
+        }
+        if(this.predecessor != null){
+            msj = "Valor predecesor "+predecessor.getValue();
+        }
+        return msj;
+    }
 }

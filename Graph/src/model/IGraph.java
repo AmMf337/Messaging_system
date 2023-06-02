@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public interface IGraph<T> {
 
     public void dfs();
@@ -18,4 +20,6 @@ public interface IGraph<T> {
     public void floydWarshall();
 
     public  void prim(T value);
+
+    public ArrayList<Edge<T>> kruskal();
 }

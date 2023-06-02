@@ -4,8 +4,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class GraphAbjacentListTest {
     private GraphAbjacentList<Integer> graph;
@@ -510,6 +513,82 @@ public class GraphAbjacentListTest {
                 .anyMatch(vertex -> vertex.getWeight() < 0);
 
         assert hasNegativeCycle;
+
+
+    }
+    @Test
+    public void testKruskal() {
+
+        Vertex<Integer> v1 = new Vertex<>(1);
+        Vertex<Integer> v2 = new Vertex<>(2);
+        Vertex<Integer> v3 = new Vertex<>(3);
+        Vertex<Integer> v4 = new Vertex<>(4);
+        Vertex<Integer> v5 = new Vertex<>(5);
+        graph.addVertex(v1);
+        graph.addVertex(v2);
+        graph.addVertex(v3);
+        graph.addVertex(v4);
+        graph.addVertex(v5);
+        graph.createEdge(1, 2, 1);
+        graph.createEdge(1, 3, 3);
+        graph.createEdge(2, 3, 1);
+        graph.createEdge(2, 4, 4);
+        graph.createEdge(3, 4, 1);
+        graph.createEdge(3, 5, 2);
+        graph.createEdge(4, 5, 3);
+
+        ArrayList<Edge<Integer>> minimumSpanningTree = graph.kruskal();
+
+        Assert.assertEquals(4, minimumSpanningTree.size());
+
+    }
+    @Test
+    public void testKruskalDisconnectedGraph() {
+        Vertex<Integer> v1 = new Vertex<>(1);
+        Vertex<Integer> v2 = new Vertex<>(2);
+        Vertex<Integer> v3 = new Vertex<>(3);
+        Vertex<Integer> v4 = new Vertex<>(4);
+        Vertex<Integer> v5 = new Vertex<>(5);
+        graph.addVertex(v1);
+        graph.addVertex(v2);
+        graph.addVertex(v3);
+        graph.addVertex(v4);
+        graph.addVertex(v5);
+        graph.createEdge(1, 2, 1);
+        graph.createEdge(3, 4, 2);
+
+        ArrayList<Edge<Integer>>  minimumSpanningTree = graph.kruskal();
+
+        Assert.assertEquals(2, minimumSpanningTree.size());
+        Edge<Integer> b = new Edge<>(v1,v2,1);
+        Edge<Integer> c = new Edge<>(v3,v4,2);
+        Assert.assertFalse(minimumSpanningTree.contains(b));
+        Assert.assertFalse(minimumSpanningTree.contains(c));
+
+
+    }
+    @Test
+    public void testKruskalGraphWithCycles() {
+        Vertex<Integer> v1 = new Vertex<>(1);
+        Vertex<Integer> v2 = new Vertex<>(2);
+        Vertex<Integer> v3 = new Vertex<>(3);
+        Vertex<Integer> v4 = new Vertex<>(4);
+        Vertex<Integer> v5 = new Vertex<>(5);
+        graph.addVertex(v1);
+        graph.addVertex(v2);
+        graph.addVertex(v3);
+        graph.addVertex(v4);
+        graph.addVertex(v5);
+        graph.createEdge(1, 2, 1);
+        graph.createEdge(3, 4, 2);
+
+        ArrayList<Edge<Integer>>  minimumSpanningTree = graph.kruskal();
+
+        Assert.assertEquals(2, minimumSpanningTree.size());
+        Edge<Integer> b = new Edge<>(v1,v2,1);
+        Edge<Integer> c = new Edge<>(v3,v4,2);
+        Assert.assertFalse(minimumSpanningTree.contains(b));
+        Assert.assertFalse(minimumSpanningTree.contains(c));
 
 
     }

@@ -12,7 +12,13 @@ public class GraphAbjacentList<T> implements IGraph<T>{
         vertexes = new ArrayList<>(time);
         time = 0;
     }
-
+    public String printGraph(){
+        String msj = "";
+        for (Vertex<T> v:vertexes) {
+            msj += v.toString()+"\n";
+        }
+        return  msj;
+    }
     @Override
     public void dfs() {
         for (Vertex<T> vertex : vertexes) {
@@ -110,6 +116,11 @@ public class GraphAbjacentList<T> implements IGraph<T>{
 
     @Override
     public void addVertex(Vertex<T> vertex) {
+        for (Vertex<T> v:vertexes) {
+            if(v.getValue().equals(vertex.getValue())){
+                return;
+            }
+        }
         vertexes.add(vertex);
     }
 
@@ -275,9 +286,59 @@ public class GraphAbjacentList<T> implements IGraph<T>{
     public ArrayList<Vertex<T>> getVertexes() {
         return vertexes;
     }
+    @Override
+    public ArrayList<Edge<T>> kruskal() {
+
+        ArrayList<Edge<T>> mst = new ArrayList<>();
 
 
+        ArrayList<Edge<T>> allEdges = new ArrayList<>();
 
 
-    
+        for (Vertex<T> vertex : vertexes) {
+            ArrayList<Vertex<T>> neighbors = vertex.getVertexes();
+            for (Vertex<T> neighbor : neighbors) {
+                int weight = neighbor.getWeight();
+                Edge<T> edge = new Edge<>(vertex, neighbor, weight);
+                allEdges.add(edge);
+            }
+        }
+
+
+        allEdges.sort(new ComparatorWeightEdges<>());
+
+
+        Map<Vertex<T>, Vertex<T>> disjointSets = new HashMap<>();
+        for (Vertex<T> vertex : vertexes) {
+            disjointSets.put(vertex, vertex);
+        }
+
+
+        for (Edge<T> edge : allEdges) {
+            Vertex<T> u = edge.getStart();
+            Vertex<T>  v = edge.getEnd();
+
+
+            Vertex<T> uSet = find(disjointSets, u);
+            Vertex<T> vSet = find(disjointSets, v);
+            if (!uSet.equals(vSet)) {
+
+                mst.add(edge);
+
+
+                disjointSets.put(vSet, uSet);
+            }
+        }
+
+        return mst;
+    }
+
+    private Vertex<T> find(Map<Vertex<T>, Vertex<T>> disjointSets, Vertex<T> vertex) {
+        if (!disjointSets.get(vertex).equals(vertex)) {
+            disjointSets.put(vertex, find(disjointSets, disjointSets.get(vertex)));
+        }
+        return disjointSets.get(vertex);
+    }
+
+
 }
