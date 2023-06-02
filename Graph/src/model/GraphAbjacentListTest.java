@@ -25,7 +25,7 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex2);
 
         // Crear aristas
-        graph.createEdge(1, 2);
+        graph.createEdge(1, 2, 9);
 
         // Realizar DFS
         graph.dfs();
@@ -48,9 +48,9 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex4);
 
         
-        graph.createEdge(1, 2);
-        graph.createEdge(2, 3);
-        graph.createEdge(2, 4);
+        graph.createEdge(1, 2, 4);
+        graph.createEdge(2, 3, 6);
+        graph.createEdge(2, 4, 7);
 
         
         graph.dfs();
@@ -74,11 +74,11 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex4);
         graph.addVertex(vertex5);
         
-        graph.createEdge(1, 2);
-        graph.createEdge(2, 3);
-        graph.createEdge(2, 4);
-        graph.createEdge(1, 3);
-        graph.createEdge(4, 5);
+        graph.createEdge(1, 2, 3);
+        graph.createEdge(2, 3, 2);
+        graph.createEdge(2, 4, 1);
+        graph.createEdge(1, 3, 5);
+        graph.createEdge(4, 5, 7);
        
         graph.dfs();
 
@@ -99,7 +99,7 @@ public class GraphAbjacentListTest {
        
 
         // Crear aristas
-        graph.createEdge(1, 2);
+        graph.createEdge(1, 2, 5);
         
 
         // Realizar BFS desde el vértice 1
@@ -122,8 +122,8 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex3);
 
         
-        graph.createEdge(1, 2);
-        graph.createEdge(2, 3);
+        graph.createEdge(1, 2, 7);
+        graph.createEdge(2, 3, 9);
 
        
         graph.bfs(1);
@@ -146,9 +146,9 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex3);
         graph.addVertex(vertex4);
         // Crear aristas
-        graph.createEdge(1, 2);
-        graph.createEdge(2, 3);
-        graph.createEdge(3, 4);
+        graph.createEdge(1, 2, 4);
+        graph.createEdge(2, 3, 2);
+        graph.createEdge(3, 4, 1);
         // Realizar BFS desde el vértice 1
         graph.bfs(1);
 
@@ -169,7 +169,7 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex2);
 
         // Crear una arista entre los vértices 1 y 2
-        graph.createEdge(1, 2);
+        graph.createEdge(1, 2, 6);
 
         // Verificar la adición de la arista
         assertEquals(1, vertex1.getVertexes().size());
@@ -185,8 +185,8 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex2);
         graph.addVertex(vertex3);
        
-        graph.createEdge(1, 2);
-        graph.createEdge(1, 3);
+        graph.createEdge(1, 2, 7);
+        graph.createEdge(1, 3, 9);
        
         assertEquals(2, vertex1.getVertexes().size());
         assertEquals(0, vertex2.getVertexes().size());
@@ -202,10 +202,10 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex2);
         graph.addVertex(vertex3);
        
-        graph.createEdge(1, 2);
+        graph.createEdge(1, 2, 4);
        
-        graph.createEdge(1, 3);
-        graph.createEdge(3, 1);
+        graph.createEdge(1, 3, 3);
+        graph.createEdge(3, 1, 2);
 
        
         assertEquals(2, vertex1.getVertexes().size());
@@ -248,7 +248,7 @@ public class GraphAbjacentListTest {
         graph.getVertexes().add(0, vertex1);
         graph.addVertex(vertex2);
         
-        graph.createEdge(1, 2);
+        graph.createEdge(1, 2, 7);
 
         graph.deleteEdge(1, 2);
 
@@ -265,8 +265,8 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex2);
         graph.addVertex(vertex3);
         
-        graph.createEdge(1, 2);
-        graph.createEdge(1, 3);
+        graph.createEdge(1, 2, 2);
+        graph.createEdge(1, 3, 5);
 
         graph.deleteEdge(1, 2);
         graph.deleteEdge(1, 3);
@@ -286,9 +286,9 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex3);
         graph.addVertex(vertex4);
         
-        graph.createEdge(1, 2);
-        graph.createEdge(1, 3);
-        graph.createEdge(1, 4);
+        graph.createEdge(1, 2, 6);
+        graph.createEdge(1, 3, 4);
+        graph.createEdge(1, 4, 7);
 
         graph.deleteEdge(1, 2);
         graph.deleteEdge(1, 3);
@@ -330,8 +330,8 @@ public class GraphAbjacentListTest {
         graph.addVertex(vertex1);
         graph.addVertex(vertex2);
         graph.addVertex(vertex3);
-        graph.createEdge(2, 1);
-        graph.createEdge(3, 1);
+        graph.createEdge(2, 1, 5);
+        graph.createEdge(3, 1, 3);
         graph.deleteVertex(1);
         
         try{
@@ -387,4 +387,136 @@ public class GraphAbjacentListTest {
         }
         
     }
+
+    @Test
+    public void testPrimWithEmptyGraph() {
+
+
+        // Ejecutar el algoritmo prim
+        graph.prim(0);
+
+
+        assert graph.getVertexes().isEmpty();
+
+    }
+
+    @Test
+    public void testPrimWithDisconnectedGraph() {
+        Vertex<Integer> vertex1 = new Vertex<>(1);
+        Vertex<Integer> vertex2 = new Vertex<>(2);
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+
+        graph.prim(1);
+
+
+        assertEquals(2,graph.getVertexes().size());
+        assert graph.getVertexes().contains(vertex1);
+        assert graph.getVertexes().contains(vertex2);
+    }
+
+    @Test
+    public void testPrimWithConnectedGraph() {
+
+        Vertex<Integer> vertex1 = new Vertex<>(1);
+        Vertex<Integer> vertex2 = new Vertex<>(2);
+        Vertex<Integer> vertex3 = new Vertex<>(3);
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addVertex(vertex3);
+
+        graph.prim(1);
+
+        assert graph.getVertexes().size() == 3;
+
+    }
+
+    @Test
+    public void testFloydWarshallWithConnectedGraph() {
+
+        Vertex<Integer> vertex1 = new Vertex<>(1);
+        Vertex<Integer> vertex2 = new Vertex<>(2);
+        Vertex<Integer> vertex3 = new Vertex<>(3);
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addVertex(vertex3);
+
+        graph.createEdge(2, 1, 5);
+
+        graph.createEdge(1, 3, 10);
+
+        graph.floydWarshall();
+
+
+        assertEquals(5, vertex1.getWeight());
+        assert vertex2.getPredecessor() == null;
+
+        assertEquals(0, vertex2.getWeight());
+        assertEquals(vertex1.getPredecessor().getValue(), vertex1.getValue());
+
+
+        assertEquals(10, vertex3.getWeight());
+        assertEquals(vertex3.getPredecessor().getValue(), vertex3.getValue());
+
+
+    }
+
+    @Test
+    public void testFloydWarshallWithDisconnectedGraph() {
+
+        // Añadir vértices y aristas al grafo no conexo
+        Vertex<Integer> vertex1 = new Vertex<>(1);
+        Vertex<Integer> vertex2 = new Vertex<>(2);
+        Vertex<Integer> vertex3 = new Vertex<>(3);
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addVertex(vertex3);
+
+        graph.floydWarshall();
+
+
+        assert vertex1.getWeight() == 0;
+        assert vertex1.getPredecessor() == null;
+
+        assert vertex2.getWeight() == 0;
+        assert vertex2.getPredecessor() == null;
+
+        assert vertex3.getWeight() == 0;
+        assert vertex3.getPredecessor() == null;
+
+
+    }
+
+    @Test
+    public void testFloydWarshallWithGraphContainingNegativeCycle() {
+
+
+        Vertex<Integer> vertex1 = new Vertex<>(1);
+        Vertex<Integer> vertex2 = new Vertex<>(2);
+        Vertex<Integer> vertex3 = new Vertex<>(3);
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addVertex(vertex3);
+
+        graph.createEdge(vertex1.getValue(), vertex2.getValue(), 2);
+        graph.createEdge(vertex2.getValue(), vertex3.getValue(), -5);
+        graph.createEdge(vertex3.getValue(), vertex1.getValue(), 1);
+
+
+        graph.floydWarshall();
+
+
+        boolean hasNegativeCycle = graph.getVertexes().stream()
+                .anyMatch(vertex -> vertex.getWeight() < 0);
+
+        assert hasNegativeCycle;
+
+
+    }
+
+
+
+
+
+
 }
