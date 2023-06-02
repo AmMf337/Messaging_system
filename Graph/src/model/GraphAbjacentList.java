@@ -5,12 +5,25 @@ import java.util.*;
 public class GraphAbjacentList<T> implements IGraph<T>{
 
     boolean isManaged;
-    ArrayList<Vertex<T>> vertexes;
+    private ArrayList<Vertex<T>> vertexes;
     private int time;
     public GraphAbjacentList(boolean isManaged) {
         this.isManaged = isManaged;
         vertexes = new ArrayList<>(time);
         time = 0;
+    }
+    public String printBFS(T origin) {
+        bfs(origin);
+
+        String msj = "";
+        for (Vertex<T> vertex : vertexes) {
+            if (vertex.getColor() == Color.BLACK) {
+                msj = vertex.getValue()+" -> ";
+            }
+        }
+
+
+        return msj;
     }
     public String printGraph(){
         String msj = "";
@@ -140,7 +153,7 @@ public class GraphAbjacentList<T> implements IGraph<T>{
             }
         }
     }
-    public Vertex<T> searchVertex(T value) throws Exception{
+    public Vertex<T> searchVertex(T value) {
         int position = -1;
         for (int i = 0;i<vertexes.size();i++) {
             if(vertexes.get(i).getValue()==value){
@@ -150,7 +163,7 @@ public class GraphAbjacentList<T> implements IGraph<T>{
         if(position!=1){
             return vertexes.get(position);
         }else{
-            throw new Exception("vertex not found");
+            return null;
         }
     }
 
